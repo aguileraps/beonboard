@@ -4,9 +4,9 @@ import init from "./commands/init.js";
 
 const program = new Command();
 
-// onboarding-line setea los comandos
+// onboarding-line setea los comandos para que se pueda tener informacion de consola setea los comandos para que se pueda tener informacion de consola
 program
-    .option('-t, --tree', 'Muestra ael arbol de onboarding')
+    .option('-o, --oneline', 'Muestra las descripciones en una sola linea')
     .option('-f, --files', 'Solo archivos')
     .action(init);
 
