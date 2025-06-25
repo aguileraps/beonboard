@@ -1,11 +1,13 @@
+// onboarding-file aqui se analizan las directivas en el archivo
+
 import fs from "fs";
 import {
-    DIRECTIVE_NEXT_LINE,
-    DIRECTIVE_ONBOARDING_FILE,
-    DIRECTIVE_ONBOARDING_LINE
+    DIRECTIVE_FILE,
+    DIRECTIVE_LINE,
+    DIRECTIVE_NEXT_LINE
 } from "../commons/constants.js";
 
-// onboarding-line procesa las directivas dentro de los archivos del proyecto
+// onboarding-next-line procesa las directivas dentro de los archivos del proyecto
 export function extractDirectives(filePath) {
     const content = fs.readFileSync(filePath, 'utf8');
     const lines = content.split(/\r?\n/);
@@ -18,32 +20,47 @@ export function extractDirectives(filePath) {
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
 
-        if (data.onboarding.length === 0 && line.startsWith(DIRECTIVE_ONBOARDING_FILE)) {
-            const onboardingLines = [
-                line
-            ];
-
-            let j = i + 1;
-            while (j < lines.length && lines[j].trim().startsWith(DIRECTIVE_NEXT_LINE)) {
-                onboardingLines.push(lines[j]);
-                j++;
-            }
-
-            data.onboarding = onboardingLines;
-
-            i = j - 1;
+        if (data.onboarding.length === 0 && line.startsWith(DIRECTIVE_FILE)) {
+            const {block, lastIndex} = captureNextLines(lines, i);
+            data.onboarding = block;
+            i = lastIndex;
+            continue;
         }
 
-        // Extraer líneas específicas si corresponde
-        if (line.startsWith(DIRECTIVE_ONBOARDING_LINE)) {
-            const nextLine = lines[i + 1] ?? '';
-            data.lines.push({
-                number: String(i + 2),
-                line: nextLine,
-                onboarding: line
-            });
+        if (line.startsWith(DIRECTIVE_NEXT_LINE)) {
+            const {block, lastIndex} = captureNextLines(lines, i);
+            if (block.length > 0) {
+                data.lines.push({
+                    number: i + 1,
+                    onboarding: block,
+                    line: lines[lastIndex + 1] ?? ''
+                });
+            }
+            i = lastIndex;
         }
     }
 
+    if (data.lines.length > 0 && data.onboarding.length === 0) {
+        data.onboarding.push(`contiene ${data.lines.length} lineas con descripciones`)
+    }
+
+    // console.log(JSON.stringify(data, null, 2));
+
     return data;
+}
+
+// onboarding-next-line busca todas las lineas comentadas debajo de la directiva
+function captureNextLines(lines, startIndex) {
+    const block = [];
+    let i = startIndex;
+
+    while (i < lines.length && lines[i].trim().startsWith(DIRECTIVE_LINE)) {
+        block.push(lines[i].trim());
+        i++;
+    }
+
+    return {
+        block,
+        lastIndex: i - 1
+    };
 }

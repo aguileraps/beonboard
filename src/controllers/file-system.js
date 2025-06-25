@@ -1,21 +1,17 @@
-// onboarding-file controlador de lectura de archivos asd acontrolador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos controlador de lectura de archivos
-// controlador de lectura de archivos
+// onboarding-file lectura de archivos
+// siguente texto para testear multiples lineas
+// otra linea
 import fs from 'fs';
 import {IGNORED_DIRS, INCLUDED_FILES_PATTERNS} from "../commons/constants.js";
 import {extractDirectives} from "./text-analysis.js";
 import * as path from "node:path";
 
 
-// onboarding-line hace la lectura del directorio
+// onboarding-next-line hace la lectura del directorio
 export function readdir(dir, baseDir = dir) {
     return fs.readdirSync(dir, {withFileTypes: true})
         .filter(entry => isAllowed(entry))
+        // .filter(entry => hasDirective(entry))
         .map(entry => processEntry(entry, dir, baseDir))
         .flat();
 }
