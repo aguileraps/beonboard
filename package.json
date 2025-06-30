@@ -1,9 +1,11 @@
 {
-  "name": "onboarding",
+  "name": "beonboard",
   "version": "1.0.0",
   "description": "Resuelve el problema de los nuevos miembros del equipo pierden semanas entendiendo el código",
   "bin": {
-    "onboarding": "bin/cli.js"
+    "beonboard": "bin/cli.js",
+    "onboarding": "bin/cli.js",
+    "onboard": "bin/cli.js"
   },
   "type": "module",
   "scripts": {
