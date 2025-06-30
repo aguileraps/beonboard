@@ -16,19 +16,22 @@ export default function onboarding(name, options, command) {
 
     const {oneline, files} = name;
 
-    const filesAndDirs = readdir("./");
-    console.log('');
-    console.log(chalk.dim('-'.repeat(120)));
-    console.log(chalk.green(`${packageJson.name} ${packageJson.version}`));
-    console.log(chalk.dim('-'.repeat(120)));
+    const directory = "./"
 
-    if(oneline){
+    const filesAndDirs = readdir(directory, directory, files);
+
+    console.log('');
+    console.log(chalk.dim('-'.repeat(100)));
+    console.log(chalk.green(`${packageJson.name} ${packageJson.version}`));
+    console.log(chalk.dim('-'.repeat(100)));
+
+    if (oneline) {
         treeOneLine(filesAndDirs, '', false, files)
     } else {
         treeDefault(filesAndDirs)
     }
 
-    console.log(chalk.dim('-'.repeat(120)));
+    console.log(chalk.dim('-'.repeat(100)));
     console.log('');
 }
 

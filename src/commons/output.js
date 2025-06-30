@@ -37,7 +37,7 @@ export function treeDefault(nodes, prefix = '', isLast = true) {
                 node.onboarding.forEach((line, i) => {
                     console.log(
                         chalk.dim(newPrefix + '│ ') +
-                        chalk.white(normalize(line))
+                        chalk.dim(normalize(line))
                     );
                 })
 
@@ -62,7 +62,7 @@ export function treeDefault(nodes, prefix = '', isLast = true) {
                         console.log(
                             chalk.dim(prefixSubBranch) +
                             chalk.dim(`${ln + i}`.padStart(3, ' ') + col) +
-                            chalk.white(normalize(line))
+                            chalk.dim(normalize(line))
                         );
                     })
 
@@ -91,11 +91,11 @@ let filenameMaxLength = 0;
 
 function getMaxPadLength(nodes) {
     nodes.forEach((node, index) => {
-        if (node.folder) {
+        if (node?.folder) {
             if (node.files.length > 0) {
                 getMaxPadLength(node.files);
             }
-        } else if (node.file) {
+        } else if (node?.file) {
             if (node.file.length > filenameMaxLength) {
                 filenameMaxLength = node.file.length;
             }
@@ -115,7 +115,7 @@ export function treeOneLine(nodes, prefix = '', isLast = true, onlyFiles = false
         const branch = last ? '└── ' : '├── ';
         const newPrefix = prefix + (last ? '    ' : '│   ');
 
-        if (node.folder) {
+        if (node?.folder) {
             if (node.files.length > 0) {
                 console.log(
                     chalk.dim(prefix + branch) +
@@ -123,7 +123,7 @@ export function treeOneLine(nodes, prefix = '', isLast = true, onlyFiles = false
                 );
                 treeOneLine(node.files, newPrefix, last, onlyFiles);
             }
-        } else if (node.file) {
+        } else if (node?.file) {
             const parts = node.file.split(/[/\\]/);
             const filename = parts[parts.length - 1];
 

@@ -8,7 +8,7 @@ import {
 } from "../commons/constants.js";
 
 // onboarding-next-line procesa las directivas dentro de los archivos del proyecto
-export function extractDirectives(filePath) {
+export function extractDirectives(filePath, onlyFiles = false) {
     const content = fs.readFileSync(filePath, 'utf8');
     const lines = content.split(/\r?\n/);
 
@@ -27,7 +27,7 @@ export function extractDirectives(filePath) {
             continue;
         }
 
-        if (line.startsWith(DIRECTIVE_NEXT_LINE)) {
+        if (!onlyFiles && line.startsWith(DIRECTIVE_NEXT_LINE)) {
             const {block, lastIndex} = captureNextLines(lines, i);
             if (block.length > 0) {
                 data.lines.push({

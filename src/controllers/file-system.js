@@ -8,29 +8,37 @@ import * as path from "node:path";
 
 
 // onboarding-next-line hace la lectura del directorio
-export function readdir(dir, baseDir = dir) {
+export function readdir(dir, baseDir = dir, onlyFiles = false) {
     return fs.readdirSync(dir, {withFileTypes: true})
         .filter(entry => isAllowed(entry))
         // .filter(entry => hasDirective(entry))
-        .map(entry => processEntry(entry, dir, baseDir))
+        .map(entry => processEntry(entry, dir, baseDir, onlyFiles))
+        .filter(entry => entry != null)
         .flat();
 }
 
-function processEntry(entry, dir, baseDir) {
+function processEntry(entry, dir, baseDir, onlyFiles) {
+
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
         return [{
             folder: entry.name,
-            files: readdir(fullPath, baseDir)
+            files: readdir(fullPath, baseDir, onlyFiles)
         }];
     }
 
     if (entry.isFile()) {
         const filePath = path.relative(baseDir, fullPath);
-        return [{
-            file: filePath,
-            ...extractDirectives(filePath)
-        }];
+        const directives = extractDirectives(filePath, onlyFiles)
+        if(
+            directives.onboarding.length > 0 ||
+            directives.lines.length > 0
+        ) {
+            return [{
+                file: filePath,
+                ...directives
+            }];
+        }
     }
 }
 
