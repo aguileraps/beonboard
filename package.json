@@ -2,6 +2,7 @@
   "name": "beonboard",
   "version": "1.0.0",
   "description": "Resuelve el problema de los nuevos miembros del equipo pierden semanas entendiendo el código",
+  "homepage": "https://github.com/aguileraps/beonboard",
   "bin": {
     "beonboard": "bin/cli.js",
     "onboarding": "bin/cli.js",
