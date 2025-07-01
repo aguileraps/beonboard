@@ -2,7 +2,7 @@
 // siguente texto para testear multiples lineas
 // otra linea
 import fs from 'fs';
-import {IGNORED_DIRS, INCLUDED_FILES_PATTERNS} from "../commons/constants.js";
+import {IGNORED_DIRS_PATTERNS, INCLUDED_FILES_PATTERNS} from "../commons/constants.js";
 import {extractDirectives} from "./text-analysis.js";
 import * as path from "node:path";
 
@@ -30,7 +30,7 @@ function processEntry(entry, dir, baseDir, onlyFiles) {
     if (entry.isFile()) {
         const filePath = path.relative(baseDir, fullPath);
         const directives = extractDirectives(filePath, onlyFiles)
-        if(
+        if (
             directives.onboarding.length > 0 ||
             directives.lines.length > 0
         ) {
@@ -44,7 +44,9 @@ function processEntry(entry, dir, baseDir, onlyFiles) {
 
 function isAllowed(entry) {
     if (entry.isDirectory()) {
-        return !IGNORED_DIRS.includes(entry.name);
+        return !IGNORED_DIRS_PATTERNS.some(pattern => {
+            return pattern.test(entry.name)
+        });
     }
     if (entry.isFile()) {
         return INCLUDED_FILES_PATTERNS.some(pattern => {

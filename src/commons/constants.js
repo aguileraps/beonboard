@@ -1,10 +1,10 @@
 // onboarding-file contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes contiene constantes
 
 // onboarding-next-line listado de directorios que no se analizan
-export const IGNORED_DIRS = [
-    'node_modules',
-    '.git',
-    'dist'
+export const IGNORED_DIRS_PATTERNS = [
+    /^\..*/,
+    /^node_modules$/,
+    /^dist$/
 ];
 
 // onboarding-next-line extensiones de archivos que analiza en busca de directivas
