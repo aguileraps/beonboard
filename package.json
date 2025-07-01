@@ -1,6 +1,6 @@
 {
   "name": "beonboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Resuelve el problema de los nuevos miembros del equipo pierden semanas entendiendo el código",
   "homepage": "https://github.com/aguileraps/beonboard",
   "bin": {
